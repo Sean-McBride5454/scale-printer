@@ -6,7 +6,17 @@ GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
 
 readings_to_average = 10
 sck_pin = 6
+
 dout_pins = [17] # 1, 2, 3, 4 [22, 4, 17, 27]
+Cell = int(input("What Load cell do you want to calibrate (1-4)"))
+if (Cell == 1):
+    dout_pins = [22]
+if (Cell == 2):
+    dout_pins = [4]
+if (Cell == 3):
+    dout_pins = [17]
+if (Cell == 4):
+    dout_pins = [27]
 
 hx711 = HX711(dout_pins=dout_pins,
               sck_pin=sck_pin,
