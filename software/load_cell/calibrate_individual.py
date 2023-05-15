@@ -1,13 +1,13 @@
 from hx711_multi import HX711
 from time import perf_counter
 import RPi.GPIO as GPIO  # import GPIO
+from array import *
 
-GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
-
+GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering 
 readings_to_average = 10
 sck_pin = 6
-
-dout_pins = [17] # 1, 2, 3, 4 [22, 4, 17, 27]
+weight_multiple = array("f", [])
+dout_pins = [17]  # 1, 2, 3, 4 [22, 4, 17, 27]
 for i in range(0, 4):
     Cell = int(input("What Load cell do you want to calibrate (1-4)"))
     if (Cell == 1):
@@ -33,8 +33,11 @@ for i in range(0, 4):
     # reset ADC, zero it
     hx711.reset()
 
-    weight_multiple[cell] = hx711.run_calibration(known_weights=[1, 2, 5, 10])
+    cal = hx711.run_calibration(known_weights=[1, 2, 5, 10])
+    weight_multiple.append(cal)
     print(f'Weight multiple = {weight_multiple[cell]}')
-    
-for i in range(0,4):
+
+cell = 0
+for i in range(0, 4):
     print(f'Weight multiple = {weight_multiple[cell]}')
+    cell = cell + 1
